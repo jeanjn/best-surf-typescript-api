@@ -1,5 +1,5 @@
 import { Beach } from '@src/models/beach';
-import { ForecastPoint, StormGlass } from '@src/clients/stormGlass';
+import { ForecastPoint, StormGlass } from '@src/clients/StormGlass';
 import { InternalError } from '@src/util/errors/internal-error';
 import logger from '@src/logger';
 
