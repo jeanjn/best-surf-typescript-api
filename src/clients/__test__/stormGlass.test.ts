@@ -1,4 +1,4 @@
-import { StormGlass } from '@src/clients/stormGlass';
+import { StormGlass } from '@src/clients/StormGlass';
 import stormGlassWeather3HoursFixture from '@test/fixtures/stormglass_weather_3_hours.json';
 import stormGlassWeatherNormalized3HoursFixture from '@test/fixtures/stormglass_normalized_response_3_hours.json';
 import * as HTTPUtil from '@src/util/request';
