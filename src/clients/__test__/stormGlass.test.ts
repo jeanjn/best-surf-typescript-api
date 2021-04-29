@@ -1,28 +1,32 @@
-import { StormGlass } from '@src/clients/StormGlass';
-import stormGlassWeather3HoursFixture from '@test/fixtures/stormglass_weather_3_hours.json';
-import stormGlassWeatherNormalized3HoursFixture from '@test/fixtures/stormglass_normalized_response_3_hours.json';
+import { StormGlass } from '@src/clients/stormGlass';
+import stormglassNormalizedResponseFixture from '@test/fixtures/stormglass_normalized_response_3_hours.json';
+import * as stormglassWeatherPointFixture from '@test/fixtures/stormglass_weather_3_hours.json';
 import * as HTTPUtil from '@src/util/request';
 
 jest.mock('@src/util/request');
 
 describe('StormGlass client', () => {
-    const mockedRequest = new HTTPUtil.Request() as jest.Mocked<HTTPUtil.Request>;
-
+    /**
+     * Used for static method's mocks
+     */
     const MockedRequestClass = HTTPUtil.Request as jest.Mocked<
         typeof HTTPUtil.Request
     >;
-
+    /**
+     * Used for instance method's mocks
+     */
+    const mockedRequest = new HTTPUtil.Request() as jest.Mocked<HTTPUtil.Request>;
     it('should return the normalized forecast from the StormGlass service', async () => {
-        const lat = -33.1234;
-        const lng = 123.34455;
+        const lat = -33.792726;
+        const lng = 151.289824;
 
         mockedRequest.get.mockResolvedValue({
-            data: stormGlassWeather3HoursFixture,
+            data: stormglassWeatherPointFixture,
         } as HTTPUtil.Response);
 
         const stormGlass = new StormGlass(mockedRequest);
         const response = await stormGlass.fetchPoints(lat, lng);
-        expect(response).toEqual(stormGlassWeatherNormalized3HoursFixture);
+        expect(response).toEqual(stormglassNormalizedResponseFixture);
     });
 
     it('should exclude incomplete data points', async () => {
@@ -65,13 +69,16 @@ describe('StormGlass client', () => {
         const lat = -33.792726;
         const lng = 151.289824;
 
-        MockedRequestClass.isRequestError.mockReturnValue(true);
         mockedRequest.get.mockRejectedValue({
             response: {
                 status: 429,
                 data: { errors: ['Rate Limit reached'] },
             },
         });
+        /**
+         * Mock static function return
+         */
+        MockedRequestClass.isRequestError.mockReturnValue(true);
 
         const stormGlass = new StormGlass(mockedRequest);
 

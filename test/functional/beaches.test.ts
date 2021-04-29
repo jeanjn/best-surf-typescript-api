@@ -52,8 +52,7 @@ describe('Beaches functional tests', () => {
             expect(response.body).toEqual({
                 code: 400,
                 error: 'Bad Request',
-                message:
-                    'request.body.lat should be number',
+                message: 'request.body.lat should be number',
             });
         });
 
